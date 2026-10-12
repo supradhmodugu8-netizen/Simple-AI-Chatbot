@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
@@ -78,69 +79,41 @@
   --elevate-1: rgba(0, 0, 0, 0.03);
   --elevate-2: rgba(0, 0, 0, 0.08);
 
-  --background: red; /*replace with H S L */
-
-  --foreground: red; /*replace with H S L */
-
-  --border: red; /*replace with H S L */
-
-  --card: red; /*replace with H S L */
-
-  --card-foreground: red; /*replace with H S L */
-
-  --card-border: red; /*replace with H S L */
-
-  --sidebar: red; /*replace with H S L */
-
-  --sidebar-foreground: red; /*replace with H S L */
-
-  --sidebar-border: red; /*replace with H S L */
-
-  --sidebar-primary: red; /*replace with H S L */
-
-  --sidebar-primary-foreground: red; /*replace with H S L */
-
-  --sidebar-accent: red; /*replace with H S L */
-
-  --sidebar-accent-foreground: red; /*replace with H S L */
-
-  --sidebar-ring: red; /*replace with H S L */
-
-  --popover: red; /*replace with H S L */
-
-  --popover-foreground: red; /*replace with H S L */
-
-  --popover-border: red; /*replace with H S L */
-
-  --primary: red; /*replace with H S L */
-
-  --primary-foreground: red; /*replace with H S L */
-
-  --secondary: red; /*replace with H S L */
-
-  --secondary-foreground: red; /*replace with H S L */
-
-  --muted: red; /*replace with H S L */
-
-  --muted-foreground: red; /*replace with H S L */
-
-  --accent: red; /*replace with H S L */
-
-  --accent-foreground: red; /*replace with H S L */
-
-  --destructive: red; /*replace with H S L */
-
-  --destructive-foreground: red; /*replace with H S L */
-
-  --input: red; /*replace with H S L */
-  --ring: red; /*replace with H S L */
-  --chart-1: red; /*replace with H S L */
-  --chart-2: red; /*replace with H S L */
-  --chart-3: red; /*replace with H S L */
-  --chart-4: red; /*replace with H S L */
-  --chart-5: red; /*replace with H S L */
-
-  --app-font-sans: 'Inter', sans-serif;
+  --background: 42 42% 96%;
+  --foreground: 228 26% 17%;
+  --border: 38 22% 87%;
+  --card: 42 36% 98%;
+  --card-foreground: 228 26% 17%;
+  --card-border: 38 22% 87%;
+  --sidebar: 42 36% 98%;
+  --sidebar-foreground: 228 26% 17%;
+  --sidebar-border: 38 22% 87%;
+  --sidebar-primary: 228 26% 17%;
+  --sidebar-primary-foreground: 42 42% 96%;
+  --sidebar-accent: 38 24% 91%;
+  --sidebar-accent-foreground: 228 26% 17%;
+  --sidebar-ring: 18 64% 52%;
+  --popover: 42 36% 98%;
+  --popover-foreground: 228 26% 17%;
+  --popover-border: 38 22% 87%;
+  --primary: 18 64% 52%;
+  --primary-foreground: 42 42% 96%;
+  --secondary: 38 24% 91%;
+  --secondary-foreground: 228 26% 17%;
+  --muted: 38 24% 91%;
+  --muted-foreground: 225 10% 48%;
+  --accent: 18 64% 52%;
+  --accent-foreground: 42 42% 96%;
+  --destructive: 0 63% 48%;
+  --destructive-foreground: 42 42% 96%;
+  --input: 38 22% 87%;
+  --ring: 18 64% 52%;
+  --chart-1: 18 64% 52%;
+  --chart-2: 157 27% 43%;
+  --chart-3: 228 26% 17%;
+  --chart-4: 38 75% 60%;
+  --chart-5: 278 24% 58%;
+  --app-font-sans: 'DM Sans', sans-serif;
   --app-font-serif: Georgia, serif;
   --app-font-mono: Menlo, monospace;
   --radius: 0.5rem; /* 8px */
@@ -227,68 +200,40 @@
   --elevate-1: rgba(255, 255, 255, 0.04);
   --elevate-2: rgba(255, 255, 255, 0.09);
 
-  --background: red; /*replace with H S L */
-
-  --foreground: red; /*replace with H S L */
-
-  --border: red; /*replace with H S L */
-
-  --card: red; /*replace with H S L */
-
-  --card-foreground: red; /*replace with H S L */
-
-  --card-border: red; /*replace with H S L */
-
-  --sidebar: red; /*replace with H S L */
-
-  --sidebar-foreground: red; /*replace with H S L */
-
-  --sidebar-border: red; /*replace with H S L */
-
-  --sidebar-primary: red; /*replace with H S L */
-
-  --sidebar-primary-foreground: red; /*replace with H S L */
-
-  --sidebar-accent: red; /*replace with H S L */
-
-  --sidebar-accent-foreground: red; /*replace with H S L */
-
-  --sidebar-ring: red; /*replace with H S L */
-
-  --popover: red; /*replace with H S L */
-
-  --popover-foreground: red; /*replace with H S L */
-
-  --popover-border: red; /*replace with H S L */
-
-  --primary: red; /*replace with H S L */
-
-  --primary-foreground: red; /*replace with H S L */
-
-  --secondary: red; /*replace with H S L */
-
-  --secondary-foreground: red; /*replace with H S L */
-
-  --muted: red; /*replace with H S L */
-
-  --muted-foreground: red; /*replace with H S L */
-
-  --accent: red; /*replace with H S L */
-
-  --accent-foreground: red; /*replace with H S L */
-
-  --destructive: red; /*replace with H S L */
-
-  --destructive-foreground: red; /*replace with H S L */
-
-  /* Used as the border around inputs. Dark mode: Should be a border that is light enough to have high contrast when rendered on a --card background. More contrast than standard --border */
-  --input: red; /*replace with H S L */
-  --ring: red; /*replace with H S L */
-  --chart-1: red; /*replace with H S L */
-  --chart-2: red; /*replace with H S L */
-  --chart-3: red; /*replace with H S L */
-  --chart-4: red; /*replace with H S L */
-  --chart-5: red; /*replace with H S L */
+  --background: 228 20% 12%;
+  --foreground: 42 30% 93%;
+  --border: 228 14% 25%;
+  --card: 228 18% 16%;
+  --card-foreground: 42 30% 93%;
+  --card-border: 228 14% 25%;
+  --sidebar: 228 18% 16%;
+  --sidebar-foreground: 42 30% 93%;
+  --sidebar-border: 228 14% 25%;
+  --sidebar-primary: 18 64% 52%;
+  --sidebar-primary-foreground: 42 42% 96%;
+  --sidebar-accent: 228 14% 23%;
+  --sidebar-accent-foreground: 42 30% 93%;
+  --sidebar-ring: 18 64% 52%;
+  --popover: 228 18% 16%;
+  --popover-foreground: 42 30% 93%;
+  --popover-border: 228 14% 25%;
+  --primary: 18 64% 52%;
+  --primary-foreground: 42 42% 96%;
+  --secondary: 228 14% 23%;
+  --secondary-foreground: 42 30% 93%;
+  --muted: 228 14% 23%;
+  --muted-foreground: 225 10% 68%;
+  --accent: 18 64% 52%;
+  --accent-foreground: 42 42% 96%;
+  --destructive: 0 63% 48%;
+  --destructive-foreground: 42 42% 96%;
+  --input: 228 14% 25%;
+  --ring: 18 64% 52%;
+  --chart-1: 18 64% 52%;
+  --chart-2: 157 27% 53%;
+  --chart-3: 42 30% 80%;
+  --chart-4: 38 75% 60%;
+  --chart-5: 278 24% 68%;
 
   --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
   --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0);
@@ -430,4 +375,62 @@
   .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
     inset: -1px;
   }
+}
+
+/* Warm editorial chat: parchment ground, ink typography, ember accent. */
+:root { --app-font-serif: 'Manrope', sans-serif; }
+body { background: #f5f3ed; }
+button, textarea { font: inherit; }
+.chat-shell { min-height: 100dvh; display: flex; flex-direction: column; background: #f5f3ed; color: #282a35; }
+.chat-header { height: 78px; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 76px); border-bottom: 1px solid #e8e4db; background: rgba(250,249,245,.78); }
+.brand-mark { display:flex; align-items:center; gap:12px; color:#292b35; font-family:var(--app-font-serif); font-weight:800; letter-spacing:-.045em; font-size:20px; }
+.brand-orbit { width:32px;height:32px;border-radius:11px;display:grid;place-items:center;color:#fff8ef;background:#bd6046;box-shadow: inset 0 1px 0 #ffffff45; }
+.header-note { font-size:12px; color:#85837e; letter-spacing:.025em; }
+.fresh-button { display:flex;align-items:center;gap:8px;border:1px solid #e2ded5;background:#fdfcf9;color:#595b61;border-radius:999px;padding:9px 14px;font-size:12px;font-weight:600;transition:background .2s,color .2s,transform .2s; }
+.fresh-button:hover { background:#fff;color:#bd6046;transform:translateY(-1px); }
+.chat-main { flex:1; width:100%; max-width:920px; margin:0 auto; display:flex; flex-direction:column; padding:0 28px; min-height:0; }
+.thread { flex:1; overflow:auto; padding:38px 0 40px; scrollbar-width:thin; scrollbar-color:#d7d2c7 transparent; }
+.welcome { min-height:calc(100dvh - 258px); display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:42px 0 64px; }
+.welcome-sigil { width:62px;height:62px;border:1px solid #e6dcd0;background:#f9eee3;color:#bd6046;border-radius:22px;display:grid;place-items:center;margin-bottom:24px; }
+.eyebrow { color:#b45c45; font-size:11px; letter-spacing:.15em; text-transform:uppercase; font-weight:700; margin-bottom:15px; }
+.welcome h1 { font-family:var(--app-font-serif);font-size:clamp(36px,6vw,58px);line-height:1.08;letter-spacing:-.06em;font-weight:700;max-width:650px;margin:0;color:#292b35; }
+.welcome p { max-width:440px;color:#777772;font-size:15px;line-height:1.75;margin:19px 0 30px; }
+.suggestion-list { display:flex;flex-wrap:wrap;justify-content:center;gap:9px;max-width:690px; }
+.suggestion { border:1px solid #e4dfd5;border-radius:999px;background:#fbfaf7;padding:10px 15px;color:#5b5b5a;font-size:12px;transition:border-color .2s,background .2s,transform .2s; }
+.suggestion:hover { border-color:#d2a18e;background:#fff9f5;transform:translateY(-1px); }
+.conversation { display:flex;flex-direction:column;gap:30px;max-width:740px;margin:0 auto;padding:8px 0 24px; }
+.turn { display:flex;gap:14px;animation:rise-in .28s ease both; }
+.turn.user { justify-content:flex-end; }
+.turn-mark { width:29px;height:29px;flex:0 0 29px;border-radius:10px;background:#f0e4d9;color:#b65b43;display:grid;place-items:center;margin-top:2px; }
+.turn-copy { min-width:0;max-width:calc(100% - 48px); }
+.turn-label { font-size:11px;font-weight:700;letter-spacing:.045em;color:#8a8982;margin:0 0 8px; }
+.turn.user .turn-copy { max-width:min(76%,560px);background:#eee9df;border-radius:17px 17px 4px 17px;padding:13px 17px;color:#343640; }
+.turn.user .turn-label { text-align:right;color:#858078; }
+.message-text { white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.78;color:#41424a; }
+.turn.user .message-text { line-height:1.6; }
+.error-box { max-width:740px;margin:0 auto 14px;padding:13px 15px;border:1px solid #e7c4b8;border-radius:12px;background:#fcf1ed;color:#934b3b;font-size:13px;line-height:1.5;display:flex;align-items:flex-start;gap:10px; }
+.composer-wrap { padding:12px 0 24px; }
+.composer { max-width:740px;margin:0 auto;border:1px solid #dedad1;border-radius:19px;background:#fcfbf8;box-shadow:0 8px 30px #292b350b;padding:13px 14px 10px;transition:border-color .2s,box-shadow .2s; }
+.composer:focus-within { border-color:#c98a74;box-shadow:0 8px 30px #292b3510,0 0 0 3px #bd604619; }
+.composer textarea { display:block;width:100%;resize:none;border:0;outline:0;background:transparent;color:#30313a;font-size:14px;line-height:1.6;padding:4px 4px 10px;min-height:50px;max-height:180px; }
+.composer textarea::placeholder { color:#a19f98; }
+.composer-actions { display:flex;align-items:center;justify-content:space-between; }
+.composer-hint { padding-left:4px;color:#a09e97;font-size:11px; }
+.send-button { display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;background:#bd6046;color:#fff9f2;padding:10px 15px;font-size:12px;font-weight:700;transition:background .2s,transform .2s,opacity .2s; }
+.send-button:hover:not(:disabled) { background:#a94f38;transform:translateY(-1px); }
+.send-button:disabled { opacity:.45;cursor:not-allowed; }
+.send-button.loading { opacity:1;background:#a94f38; }
+.footnote { text-align:center;color:#aaa79f;font-size:10px;letter-spacing:.025em;margin-top:11px; }
+.typing-dots { display:flex;align-items:center;gap:5px;height:20px; }
+.typing-dots span { width:5px;height:5px;background:#bd806c;border-radius:50%;animation:pulse 1s ease-in-out infinite; }
+.typing-dots span:nth-child(2){animation-delay:.14s}.typing-dots span:nth-child(3){animation-delay:.28s}
+.sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+@keyframes pulse { 0%,60%,100%{opacity:.35;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)} }
+@keyframes rise-in { from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)} }
+@media(max-width:640px) {
+ .chat-header{height:64px;padding:0 17px}.header-note{display:none}.brand-mark{font-size:18px}
+ .chat-main{padding:0 16px}.thread{padding:26px 0 24px}.welcome{min-height:calc(100dvh - 226px);padding:20px 0 40px}
+ .welcome p{font-size:14px;margin:15px 0 24px}.suggestion-list{gap:8px}.suggestion{font-size:11px;padding:9px 12px}
+ .conversation{gap:24px}.composer-wrap{padding:8px 0 calc(16px + env(safe-area-inset-bottom))}
+ .composer{border-radius:17px}.composer-hint{font-size:10px}
 }
