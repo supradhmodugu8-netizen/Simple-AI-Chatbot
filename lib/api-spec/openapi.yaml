@@ -12,6 +12,8 @@ tags:
     description: Health operations
   - name: gemini
     description: AI chat operations
+  - name: chat
+    description: Chat history operations
 paths:
   /healthz:
     get:
@@ -51,6 +53,42 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /chat/history:
+    get:
+      operationId: getChatHistory
+      tags: [chat]
+      summary: Load the current browser chat history
+      responses:
+        "200":
+          description: Saved chat history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatHistory"
+        "503":
+          description: Supabase chat storage is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /chat/history/new:
+    post:
+      operationId: startNewChat
+      tags: [chat]
+      summary: Start a new browser chat session
+      responses:
+        "201":
+          description: Empty chat history for the new session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatHistory"
+        "503":
+          description: Chat session signing is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     HealthStatus:
@@ -79,6 +117,16 @@ components:
         messages:
           type: array
           minItems: 1
+          maxItems: 30
+          items:
+            $ref: "#/components/schemas/ChatTurn"
+      required:
+        - messages
+    ChatHistory:
+      type: object
+      properties:
+        messages:
+          type: array
           maxItems: 30
           items:
             $ref: "#/components/schemas/ChatTurn"

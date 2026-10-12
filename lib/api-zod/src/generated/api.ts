@@ -37,3 +37,37 @@ export const StreamGeminiChatBody = zod.object({
 export const StreamGeminiChatResponse = zod.unknown()
 
 
+/**
+ * @summary Load the current browser chat history
+ */
+export const getChatHistoryResponseMessagesItemContentMax = 12000;
+
+export const getChatHistoryResponseMessagesMax = 30;
+
+
+
+export const GetChatHistoryResponse = zod.object({
+  "messages": zod.array(zod.object({
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string().min(1).max(getChatHistoryResponseMessagesItemContentMax)
+})).max(getChatHistoryResponseMessagesMax)
+})
+
+
+/**
+ * @summary Start a new browser chat session
+ */
+export const startNewChatResponseMessagesItemContentMax = 12000;
+
+export const startNewChatResponseMessagesMax = 30;
+
+
+
+export const StartNewChatResponse = zod.object({
+  "messages": zod.array(zod.object({
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string().min(1).max(startNewChatResponseMessagesItemContentMax)
+})).max(startNewChatResponseMessagesMax)
+})
+
+

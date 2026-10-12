@@ -16,6 +16,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<ChatTurn[]>([]);
   const [draft, setDraft] = useState('');
   const [sending, setSending] = useState(false);
+  const [loadingHistory, setLoadingHistory] = useState(true);
   const [error, setError] = useState('');
   const threadRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -24,6 +25,29 @@ export default function ChatPage() {
     const thread = threadRef.current;
     if (thread) thread.scrollTo({ top: thread.scrollHeight, behavior: 'smooth' });
   }, [messages]);
+
+  useEffect(() => {
+    let active = true;
+    void (async () => {
+      try {
+        const response = await fetch('/api/chat/history', { credentials: 'include' });
+        const body = await response.json().catch(() => null);
+        if (!response.ok) {
+          throw new Error(body?.error || 'Saved chat history could not be loaded.');
+        }
+        if (active && Array.isArray(body?.messages)) {
+          setMessages(body.messages as ChatTurn[]);
+        }
+      } catch (caught) {
+        if (active) {
+          setError(caught instanceof Error ? caught.message : 'Saved chat history could not be loaded.');
+        }
+      } finally {
+        if (active) setLoadingHistory(false);
+      }
+    })();
+    return () => { active = false; };
+  }, []);
 
   function resizeTextarea() {
     const textarea = textareaRef.current;
@@ -121,11 +145,22 @@ export default function ChatPage() {
     }
   }
 
-  function startFresh() {
-    if (sending) return;
-    setMessages([]);
-    setDraft('');
+  async function startFresh() {
+    if (sending || loadingHistory) return;
     setError('');
+    try {
+      const response = await fetch('/api/chat/history/new', {
+        method: 'POST',
+        credentials: 'include',
+      });
+      const body = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(body?.error || 'A new chat could not be started.');
+      setMessages([]);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : 'A new chat could not be started.');
+      return;
+    }
+    setDraft('');
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
       textareaRef.current.focus();
@@ -140,7 +175,7 @@ export default function ChatPage() {
           <span>goodquestion</span>
         </div>
         <span className="header-note">A little help with whatever’s on your mind</span>
-        <button className="fresh-button" type="button" onClick={startFresh} disabled={sending} data-testid="button-new-conversation" aria-label="Start a fresh conversation">
+        <button className="fresh-button" type="button" onClick={() => void startFresh()} disabled={sending || loadingHistory} data-testid="button-new-conversation" aria-label="Start a fresh conversation">
           <RotateCcw size={14} />
           <span>New chat</span>
         </button>
@@ -156,7 +191,7 @@ export default function ChatPage() {
               <p>Ask about the big things, the small things, or anything in between. We’ll figure it out together.</p>
               <div className="suggestion-list" aria-label="Question ideas">
                 {suggestions.map((suggestion) => (
-                  <button key={suggestion} type="button" className="suggestion" onClick={() => void submitQuestion(suggestion)} disabled={sending} data-testid={`suggestion-${suggestion.toLowerCase().replaceAll(' ', '-')}`}>
+                 <button key={suggestion} type="button" className="suggestion" onClick={() => void submitQuestion(suggestion)} disabled={sending || loadingHistory} data-testid={`suggestion-${suggestion.toLowerCase().replaceAll(' ', '-')}`}>
                     {suggestion}
                   </button>
                 ))}
@@ -200,13 +235,13 @@ export default function ChatPage() {
               placeholder="Ask anything..."
               rows={1}
               maxLength={12000}
-              disabled={sending}
+              disabled={sending || loadingHistory}
               data-testid="input-chat-message"
               aria-describedby="composer-hint"
             />
             <div className="composer-actions">
               <span className="composer-hint" id="composer-hint">Enter to send · Shift + Enter for a new line</span>
-              <button className={`send-button${sending ? ' loading' : ''}`} type="submit" disabled={sending || !draft.trim()} data-testid="button-send-message">
+              <button className={`send-button${sending ? ' loading' : ''}`} type="submit" disabled={sending || loadingHistory || !draft.trim()} data-testid="button-send-message">
                 {sending ? <><span>Thinking</span><span className="typing-dots" aria-hidden="true"><span /><span /><span /></span></> : <><span>Send</span><ArrowUp size={15} strokeWidth={2.5} /></>}
               </button>
             </div>

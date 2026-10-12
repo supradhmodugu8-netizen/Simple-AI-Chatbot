@@ -1,31 +1,53 @@
 import { ApiError, GoogleGenAI } from "@google/genai";
-import { StreamGeminiChatBody } from "@workspace/api-zod";
+import { GetChatHistoryResponse, StreamGeminiChatBody } from "@workspace/api-zod";
 import { Router, type IRouter } from "express";
+import { getOrCreateChatSessionId } from "../lib/chat-session";
+import { getSupabaseAdminClient } from "../lib/supabase";
 
 const router: IRouter = Router();
-
-function extractProviderMessage(error: ApiError): string | undefined {
-  const jsonStart = error.message.indexOf("{");
-  if (jsonStart < 0) return undefined;
-
-  try {
-    const payload = JSON.parse(error.message.slice(jsonStart)) as {
-      error?: { message?: unknown };
-    };
-    if (typeof payload.error?.message === "string") {
-      return payload.error.message.slice(0, 300);
-    }
-  } catch {
-    return undefined;
-  }
-
-  return undefined;
-}
 
 router.post("/gemini/chat", async (req, res): Promise<void> => {
   const parsed = StreamGeminiChatBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
+    return;
+  }
+
+  const sessionId = getOrCreateChatSessionId(req, res);
+  if (!sessionId) {
+    res.status(503).json({ error: "Chat session signing is not configured." });
+    return;
+  }
+
+  const supabase = getSupabaseAdminClient();
+  if (!supabase) {
+    res.status(503).json({ error: "Supabase is not configured for this app." });
+    return;
+  }
+
+  const { error: storageCheckError } = await supabase
+    .from("chat_sessions")
+    .select("id")
+    .eq("id", sessionId)
+    .maybeSingle();
+  if (storageCheckError) {
+    req.log.error(
+      { code: storageCheckError.code },
+      "Supabase chat storage is unavailable",
+    );
+    if (
+      storageCheckError.code === "42P01" ||
+      storageCheckError.code === "PGRST205"
+    ) {
+      res.status(503).json({
+        error:
+          "Chat storage is not set up yet. Apply artifacts/simple-ai-chatbot/supabase/schema.sql in your Supabase SQL Editor.",
+      });
+      return;
+    }
+    res.status(503).json({
+      error: "Chat history is unavailable. Check the Supabase connection and try again.",
+    });
     return;
   }
 
@@ -53,40 +75,57 @@ router.post("/gemini/chat", async (req, res): Promise<void> => {
     res.setHeader("X-Accel-Buffering", "no");
     res.flushHeaders();
 
+    let assistantText = "";
     for await (const chunk of stream) {
       const content = chunk.text;
       if (content) {
+        assistantText += content;
         res.write(`data: ${JSON.stringify({ content })}\n\n`);
       }
+    }
+
+    if (!assistantText.trim()) {
+      res.write(
+        `data: ${JSON.stringify({ error: "The assistant did not return a reply. Please try again." })}\n\n`,
+      );
+      res.end();
+      return;
+    }
+
+    const savedMessages = [
+      ...parsed.data.messages,
+      { role: "assistant" as const, content: assistantText },
+    ].slice(-30);
+    if (savedMessages[0]?.role === "assistant") savedMessages.shift();
+    const history = GetChatHistoryResponse.parse({ messages: savedMessages });
+    const { error: saveError } = await supabase.from("chat_sessions").upsert(
+      {
+        id: sessionId,
+        messages: history.messages,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "id" },
+    );
+
+    if (saveError) {
+      req.log.error(
+        { code: saveError.code },
+        "Supabase could not save the completed chat",
+      );
+      res.write(
+        `data: ${JSON.stringify({ error: "The reply was generated but could not be saved. Please try again." })}\n\n`,
+      );
+      res.end();
+      return;
     }
 
     res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
     res.end();
   } catch (error) {
-    if (error instanceof ApiError && error.status === 404 && process.env.NODE_ENV === "development") {
-      try {
-        const availableGeminiModels: string[] = [];
-        const modelPager = await ai.models.list({ config: { pageSize: 100 } });
-        for await (const model of modelPager) {
-          if (model.name?.includes("gemini")) {
-            availableGeminiModels.push(model.name);
-          }
-          if (availableGeminiModels.length === 40) break;
-        }
-        req.log.warn(
-          { availableGeminiModels },
-          "Gemini model availability diagnostic",
-        );
-      } catch {
-        req.log.warn("Could not retrieve Gemini model catalog");
-      }
-    }
-
     req.log.error(
       {
         errorType: error instanceof Error ? error.name : "unknown",
         status: error instanceof ApiError ? error.status : undefined,
-        providerMessage: error instanceof ApiError ? extractProviderMessage(error) : undefined,
       },
       "Gemini chat request failed",
     );

@@ -20,6 +20,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ChatHistory,
   ChatInput,
   Error,
   HealthStatus
@@ -217,5 +218,156 @@ export const useStreamGeminiChat = <TError = ErrorType<Error>,
         TContext
       > => {
       return useMutation(getStreamGeminiChatMutationOptions(options));
+    }
+
+export const getGetChatHistoryUrl = () => {
+
+
+
+
+  return `/api/chat/history`
+}
+
+/**
+ * @summary Load the current browser chat history
+ */
+export const getChatHistory = async ( options?: Parameters<typeof customFetch>[1]): Promise<ChatHistory> => {
+
+  return customFetch<ChatHistory>(getGetChatHistoryUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetChatHistoryQueryKey = () => {
+    return [
+    `/api/chat/history`
+    ] as const;
+    }
+
+
+export const getGetChatHistoryQueryOptions = <TData = Awaited<ReturnType<typeof getChatHistory>>, TError = ErrorType<Error>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getChatHistory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetChatHistoryQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getChatHistory>>> = ({ signal }) => getChatHistory({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getChatHistory>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetChatHistoryQueryResult = NonNullable<Awaited<ReturnType<typeof getChatHistory>>>
+export type GetChatHistoryQueryError = ErrorType<Error>
+
+
+/**
+ * @summary Load the current browser chat history
+ */
+
+export function useGetChatHistory<TData = Awaited<ReturnType<typeof getChatHistory>>, TError = ErrorType<Error>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getChatHistory>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetChatHistoryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getStartNewChatUrl = () => {
+
+
+
+
+  return `/api/chat/history/new`
+}
+
+/**
+ * @summary Start a new browser chat session
+ */
+export const startNewChat = async ( options?: Parameters<typeof customFetch>[1]): Promise<ChatHistory> => {
+
+  return customFetch<ChatHistory>(getStartNewChatUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getStartNewChatMutationKey = () => ['startNewChat'] as const;
+
+export const getStartNewChatMutationOptions = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startNewChat>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof startNewChat>>, TError,void, TContext> => {
+
+const mutationKey = getStartNewChatMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof startNewChat>>, void> = () => {
+
+
+          return  startNewChat(requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StartNewChatMutationResult = NonNullable<Awaited<ReturnType<typeof startNewChat>>>
+
+    export type StartNewChatMutationError = ErrorType<Error>
+
+
+    /**
+ * @summary Start a new browser chat session
+ */
+export const useStartNewChat = <TError = ErrorType<Error>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startNewChat>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof startNewChat>>,
+        TError,
+        void,
+        TContext
+      > => {
+      return useMutation(getStartNewChatMutationOptions(options));
     }
 

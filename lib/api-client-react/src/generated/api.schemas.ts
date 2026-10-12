@@ -34,6 +34,11 @@ export interface ChatInput {
   messages: ChatTurn[];
 }
 
+export interface ChatHistory {
+  /** @maxItems 30 */
+  messages: ChatTurn[];
+}
+
 export interface Error {
   error: string;
 }
